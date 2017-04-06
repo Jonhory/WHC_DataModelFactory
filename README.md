@@ -16,7 +16,8 @@
 <img src = "https://github.com/netyouli/WHC_DataModelFactory/blob/master/WHC_DataModelFactory/images/oc.png">
 
 * 本仓库修改将Swift版本修改为Swift+ObjectMapper
-![](http://ww1.sinaimg.cn/large/c6a1cfeagy1fed0yfhw34j20so0m1q84.jpg)
+
+![](http://ww1.sinaimg.cn/large/c6a1cfeagy1fed19vgy40j20so0m1q84.jpg)
 
 使用
 ==============
