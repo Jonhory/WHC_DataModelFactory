@@ -214,6 +214,7 @@
         }else{
             [_classString appendFormat:kSWHC_MappableCLASS,className,[self handleDataEngine:dict key:@""],[self mapDataEngine:dict key:@""]];
         }
+        _classString = [NSMutableString stringWithFormat:@"\nimport ObjectMapper\n%@",_classString];
         [self setClassHeaderContent:_classString];
         [self setClassSourceContent:_classMString];
     }else{
@@ -300,7 +301,7 @@
                         }else if (_copyingCheckBox.state != 0) {
                             [_classString appendFormat:kSWHC_CopyingCLASS,className,className,classContent];
                         }else {
-                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,@"    func mapping(map: Map) { }"];
+                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,[self mapDataEngine:subObject key:keyArr[i]]];
                         }
                         
                     }
@@ -349,7 +350,7 @@
                             }
                         }else{
                             [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",className]];
-                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,@"    func mapping(map: Map) { }"];
+                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,[self mapDataEngine:subObject key:keyArr[i]]];
                         }
                     }
                 }else if ([subObject isKindOfClass:[NSString class]]){
@@ -434,176 +435,31 @@
             NSDictionary  * dict = object;
             NSInteger       count = dict.count;
             NSArray       * keyArr = [dict allKeys];
-            //            if (_classPrefixName.length > 0) {
-            //                if (_checkBox.state == 0) {
-            //                    [property appendFormat:kWHC_Prefix_H_Func,_classPrefixName];
-            //                }else {
-            //                    [property appendFormat:kSWHC_Prefix_Func,_classPrefixName];
-            //                }
-            //            }
             for (NSInteger i = 0; i < count; i++) {
-                //                id subObject = dict[keyArr[i]];
-                //                NSString * className = [self handleAfterClassName:keyArr[i]];
                 NSString * propertyName = [self handlePropertyName:keyArr[i]];
                 [property appendFormat:kSWHC_MAPPABLE,propertyName,propertyName];
-                
-                //                if([subObject isKindOfClass:[NSDictionary class]]){
-                //                    NSString * classContent = [self handleDataEngine:subObject key:keyArr[i]];
-                //                    if(_checkBox.state == 0){
-                //                        [property appendFormat:kWHC_PROPERTY('s'),className,propertyName];
-                //                        if (_codingCheckBox.state != 0 && _copyingCheckBox.state != 0) {
-                //                            [_classString appendFormat:kWHC_CodingAndCopyingCLASS,className,classContent];
-                //                        }else if (_codingCheckBox.state != 0) {
-                //                            [_classString appendFormat:kWHC_CodingCLASS,className,classContent];
-                //                        }else if (_copyingCheckBox.state != 0) {
-                //                            [_classString appendFormat:kWHC_CopyingCLASS,className,classContent];
-                //                        }else {
-                //                            [_classString appendFormat:kWHC_CLASS,className,classContent];
-                //                        }
-                //                        if (_classPrefixName.length > 0) {
-                //                            [_classMString appendFormat:kWHC_CLASS_Prefix_M,className,_classPrefixName];
-                //                        }else {
-                //                            if (_codingCheckBox.state != 0 && _copyingCheckBox.state != 0) {
-                //                                [_classMString appendFormat:kWHC_CodingAndCopyingCLASS_M,className];
-                //                            }else if (_codingCheckBox.state != 0) {
-                //                                [_classMString appendFormat:kWHC_CodingCLASS_M,className];
-                //                            }else if (_copyingCheckBox.state != 0) {
-                //                                [_classMString appendFormat:kWHC_CopyingCLASS_M,className];
-                //                            }else {
-                //                                [_classMString appendFormat:kWHC_CLASS_M,className];
-                //                            }
-                //                        }
-                //                    }else{
-                //                        [property appendFormat:kSWHC_MAPPABLE,propertyName,propertyName];
-                //                        if (_codingCheckBox.state != 0 && _copyingCheckBox.state != 0) {
-                //                            [_classString appendFormat:kSWHC_CodingAndCopyingCLASS,className,className,classContent];
-                //                        }else if (_codingCheckBox.state != 0) {
-                //                            [_classString appendFormat:kSWHC_CodingCLASS,className,className,classContent];
-                //                        }else if (_copyingCheckBox.state != 0) {
-                //                            [_classString appendFormat:kSWHC_CopyingCLASS,className,className,classContent];
-                //                        }else {
-                //                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,@"    func mapping(map: Map) { }"];
-                //                        }
-                //
-                //                    }
-                //                }else if ([subObject isKindOfClass:[NSArray class]]){
-                //                    id firstValue = nil;
-                //                    NSString * classContent = nil;
-                //                    if (((NSArray *)subObject).count > 0) {
-                //                        firstValue = ((NSArray *)subObject).firstObject;
-                //                    }else {
-                //                        goto ARRAY_PASER;
-                //                    }
-                //                    if ([firstValue isKindOfClass:[NSString class]] ||
-                //                        [firstValue isKindOfClass:[NSNumber class]]) {
-                //                        if ([firstValue isKindOfClass:[NSString class]]) {
-                //                            if(_checkBox.state == 0){
-                //                                [property appendFormat:kWHC_PROPERTY('s'),[NSString stringWithFormat:@"NSArray<%@ *>",@"NSString"],keyArr[i]];
-                //                            }else{
-                //                                [property appendFormat:kSWHC_MAPPABLE,propertyName,propertyName];
-                //                            }
-                //                        }else {
-                //                            if(_checkBox.state == 0){
-                //                                [property appendFormat:kWHC_PROPERTY('s'),[NSString stringWithFormat:@"NSArray<%@ *>",@"NSNumber"],keyArr[i]];
-                //                            }else{
-                //                                if (strcmp([firstValue objCType], @encode(float)) == 0 ||
-                //                                    strcmp([firstValue objCType], @encode(CGFloat)) == 0) {
-                //                                    [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",@"CGFloat"]];
-                //                                }else if (strcmp([firstValue objCType], @encode(double)) == 0) {
-                //                                    [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",@"double"]];
-                //                                }else if (strcmp([firstValue objCType], @encode(BOOL)) == 0) {
-                //                                    [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",@"Bool"]];
-                //                                }else {
-                //                                    [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",@"Int"]];
-                //                                }
-                //                            }
-                //                        }
-                //                    }else {
-                //                    ARRAY_PASER:
-                //                        classContent = [self handleDataEngine:subObject key:keyArr[i]];
-                //                        if(_checkBox.state == 0){
-                //                            [property appendFormat:kWHC_PROPERTY('s'),[NSString stringWithFormat:@"NSArray<%@ *>",className],propertyName];
-                //                            [_classString appendFormat:kWHC_CLASS,className,classContent];
-                //                            if (_classPrefixName.length > 0) {
-                //                                [_classMString appendFormat:kWHC_CLASS_Prefix_M,className,_classPrefixName];
-                //                            }else {
-                //                                [_classMString appendFormat:kWHC_CLASS_M,className];
-                //                            }
-                //                        }else{
-                //                            [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",className]];
-                //                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,@"    func mapping(map: Map) { }"];
-                //                        }
-                //                    }
-                //                }else if ([subObject isKindOfClass:[NSString class]]){
-                //                    if(_checkBox.state == 0){
-                //                        [property appendFormat:kWHC_PROPERTY('c'),@"NSString",propertyName];
-                //                    }else{
-                //                        [property appendFormat:kSWHC_PROPERTY,propertyName,@"String"];
-                //                    }
-                //                }else if ([subObject isKindOfClass:[NSNumber class]]){
-                //                    if(_checkBox.state == 0){
-                //                        if (strcmp([subObject objCType], @encode(float)) == 0 ||
-                //                            strcmp([subObject objCType], @encode(CGFloat)) == 0) {
-                //                            [property appendFormat:kWHC_ASSIGN_PROPERTY,@"CGFloat",propertyName];
-                //                        }else if (strcmp([subObject objCType], @encode(double)) == 0) {
-                //                            [property appendFormat:kWHC_ASSIGN_PROPERTY,@"double",propertyName];
-                //                        }else if (strcmp([subObject objCType], @encode(BOOL)) == 0) {
-                //                            [property appendFormat:kWHC_ASSIGN_PROPERTY,@"BOOL",propertyName];
-                //                        }else {
-                //                            [property appendFormat:kWHC_ASSIGN_PROPERTY,@"NSInteger",propertyName];
-                //                        }
-                //                    }else{
-                //                        if (strcmp([subObject objCType], @encode(float)) == 0 ||
-                //                            strcmp([subObject objCType], @encode(CGFloat)) == 0) {
-                //                            [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"CGFloat = 0.0"];
-                //                        }else if (strcmp([subObject objCType], @encode(double)) == 0) {
-                //                            [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"Double = 0.0"];
-                //                        }else if (strcmp([subObject objCType], @encode(BOOL)) == 0) {
-                //                            [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"Bool = false"];
-                //                        }else {
-                //                            [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"Int = 0"];
-                //                        }
-                //                    }
-                //                }else{
-                //                    if(subObject == nil){
-                //                        if(_checkBox.state == 0){
-                //                            [property appendFormat:kWHC_PROPERTY('c'),@"NSString",propertyName];
-                //                        }else{
-                //                            [property appendFormat:kSWHC_PROPERTY,propertyName,@"String"];
-                //                        }
-                //                    }else if([subObject isKindOfClass:[NSNull class]]){
-                //                        if(_checkBox.state == 0){
-                //                            [property appendFormat:kWHC_PROPERTY('c'),@"NSString",propertyName];
-                //                        }else{
-                //                            [property appendFormat:kSWHC_PROPERTY,propertyName,@"String"];
-                //                        }
-                //                    }
-                //                }
+            }
+        }else if ([object isKindOfClass:[NSArray class]]){
+            NSArray  * dictArr = object;
+            NSUInteger  count = dictArr.count;
+            if(count){
+                NSObject  * tempObject = dictArr[0];
+                for (NSInteger i = 0; i < dictArr.count; i++) {
+                    NSObject * subObject = dictArr[i];
+                    if([subObject isKindOfClass:[NSDictionary class]]){
+                        if(((NSDictionary *)subObject).count > ((NSDictionary *)tempObject).count){
+                            tempObject = subObject;
+                        }
+                    }
+                    if([subObject isKindOfClass:[NSDictionary class]]){
+                        if(((NSArray *)subObject).count > ((NSArray *)tempObject).count){
+                            tempObject = subObject;
+                        }
+                    }
+                }
+                [property appendString:[self mapDataEngine:tempObject key:key]];
             }
         }
-        //        else if ([object isKindOfClass:[NSArray class]]){
-        //            NSArray  * dictArr = object;
-        //            NSUInteger  count = dictArr.count;
-        //            if(count){
-        //                NSObject  * tempObject = dictArr[0];
-        //                for (NSInteger i = 0; i < dictArr.count; i++) {
-        //                    NSObject * subObject = dictArr[i];
-        //                    if([subObject isKindOfClass:[NSDictionary class]]){
-        //                        if(((NSDictionary *)subObject).count > ((NSDictionary *)tempObject).count){
-        //                            tempObject = subObject;
-        //                        }
-        //                    }
-        //                    if([subObject isKindOfClass:[NSDictionary class]]){
-        //                        if(((NSArray *)subObject).count > ((NSArray *)tempObject).count){
-        //                            tempObject = subObject;
-        //                        }
-        //                    }
-        //                }
-        //                [property appendString:[self handleDataEngine:tempObject key:key]];
-        //            }
-        //        }else{
-        //            NSLog(@"key = %@",key);
-        //        }
         return property;
     }
     return @"";
