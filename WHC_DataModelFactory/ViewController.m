@@ -374,7 +374,7 @@
                     }else{
                         if (strcmp([subObject objCType], @encode(float)) == 0 ||
                             strcmp([subObject objCType], @encode(CGFloat)) == 0) {
-                            [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"CGFloat = 0.0"];
+                            [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"Double = 0.0"];
                         }else if (strcmp([subObject objCType], @encode(double)) == 0) {
                             [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"Double = 0.0"];
                         }else if (strcmp([subObject objCType], @encode(BOOL)) == 0) {
