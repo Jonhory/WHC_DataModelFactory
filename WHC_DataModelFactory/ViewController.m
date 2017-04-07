@@ -54,7 +54,7 @@
 #define kSWHC_Prefix_Func @("class func prefix() -> String {\n    return \"%@\"\n}\n")
 
 #define kSWHC_CLASS @("\nclass %@ :Mappable {\n%@\n    required init?(map: Map) {}\n\n}\n")
-#define kSWHC_MappableCLASS @("\nclass %@ :Mappable {\n%@\n    required init?(map: Map) {}\n\n    func mapping(map: Map) {\n%@    }\n}\n")
+#define kSWHC_MappableCLASS @("\nclass %@: Mappable {\n%@\n    required init?(map: Map) {}\n\n    func mapping(map: Map) {\n%@    }\n}\n")
 #define kSWHC_CodingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCoding {\n \n       required init?(coder aDecoder: NSCoder) {\n              super.init()\n              self.whc_Decode(aDecoder)\n       }\n\n       func encodeWithCoder(aCoder: NSCoder) {\n              self.whc_Encode(aCoder)\n}  \n\n%@\n       }\n")
 
 #define kSWHC_CopyingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCopying {\n \n       func copyWithZone(zone: NSZone) -> AnyObject {\n              return self.whc_Copy()\n       }  \n\n %@\n}\n")
