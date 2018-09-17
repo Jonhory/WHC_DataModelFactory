@@ -144,7 +144,7 @@
 }
 
 - (IBAction)clickCheckUpdate:(NSButton *)sender {
-    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/netyouli/WHC_DataModelFactory"]];
+//    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"https://github.com/netyouli/WHC_DataModelFactory"]];
 }
 
 - (IBAction)clickFirstLower:(NSButton *)sender {
