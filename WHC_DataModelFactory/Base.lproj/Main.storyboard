@@ -710,7 +710,7 @@
                                     <constraint firstAttribute="height" constant="20" id="J2t-pS-o6M"/>
                                     <constraint firstAttribute="width" constant="137" id="z2i-lQ-I9z"/>
                                 </constraints>
-                                <buttonCell key="cell" type="check" title="Support NSCoding" bezelStyle="regularSquare" imagePosition="left" inset="2" id="yUO-8n-KIW">
+                                <buttonCell key="cell" type="check" title="Support NSCoding" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="yUO-8n-KIW">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -724,7 +724,7 @@
                                     <constraint firstAttribute="width" constant="139" id="TDd-oI-80B"/>
                                     <constraint firstAttribute="height" constant="20" id="ftO-7G-zA6"/>
                                 </constraints>
-                                <buttonCell key="cell" type="check" title="Support NSCopying" bezelStyle="regularSquare" imagePosition="left" inset="2" id="tWs-Eo-teT">
+                                <buttonCell key="cell" type="check" title="Support NSCopying" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="tWs-Eo-teT">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -832,7 +832,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="90" id="9IY-jL-4cF"/>
                                 </constraints>
-                                <buttonCell key="cell" type="roundRect" title="检查更新" bezelStyle="roundedRect" alignment="center" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Xfa-Bn-E8D">
+                                <buttonCell key="cell" type="roundRect" title="检查更新" bezelStyle="roundedRect" alignment="center" enabled="NO" state="on" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Xfa-Bn-E8D">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" size="18" name="STHeitiSC-Light"/>
                                 </buttonCell>
@@ -848,7 +848,7 @@
                                     <constraint firstAttribute="width" constant="90" id="TfM-yi-Kkz"/>
                                     <constraint firstAttribute="height" constant="20" id="Xl7-2N-h20"/>
                                 </constraints>
-                                <buttonCell key="cell" type="check" title="First Handle" bezelStyle="regularSquare" imagePosition="left" inset="2" id="GJ2-jf-FOF">
+                                <buttonCell key="cell" type="check" title="First Handle" bezelStyle="regularSquare" imagePosition="left" enabled="NO" inset="2" id="GJ2-jf-FOF">
                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>

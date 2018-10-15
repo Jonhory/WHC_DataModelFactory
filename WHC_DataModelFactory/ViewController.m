@@ -54,16 +54,21 @@
 #define kSWHC_Prefix_Func @("class func prefix() -> String {\n    return \"%@\"\n}\n")
 
 #define kSWHC_CLASS @("\nclass %@ :Mappable {\n%@\n    required init?(map: Map) {}\n\n}\n")
-#define kSWHC_MappableCLASS @("\nclass %@: Mappable {\n%@\n    required init?(map: Map) {}\n\n    func mapping(map: Map) {\n%@    }\n}\n")
-#define kSWHC_CodingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCoding {\n \n       required init?(coder aDecoder: NSCoder) {\n              super.init()\n              self.whc_Decode(aDecoder)\n       }\n\n       func encodeWithCoder(aCoder: NSCoder) {\n              self.whc_Encode(aCoder)\n}  \n\n%@\n       }\n")
+/// 包含map内容
+#define kSWHC_MappableCLASS @("\nclass %@RawModel: Mappable {\n\n%@\n    required init?(map: Map) {}\n\n    func mapping(map: Map) {\n%@    }\n}\n")
+/// 包含map coding内容
+#define kSWHC_CodingCLASS @("\nclass %@RawModel: NSObject, Mappable, NSCoding {\n\n%@\n\n    required init?(map: Map) {} \n    func mapping(map: Map) {\n%@\n    }\n\n    required init?(coder aDecoder: NSCoder) {\n        super.init()\n%@\n    }\n\n    func encode(with aCoder: NSCoder) {\n%@\n    }\n}\n")
 
 #define kSWHC_CopyingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCopying {\n \n       func copyWithZone(zone: NSZone) -> AnyObject {\n              return self.whc_Copy()\n       }  \n\n %@\n}\n")
 
-#define kSWHC_CodingAndCopyingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCoding, NSCopying {\n\n       required init?(coder aDecoder: NSCoder) {\n              super.init()\n              self.whc_Decode(aDecoder)\n       }\n\n       func encodeWithCoder(aCoder: NSCoder) {\n              self.whc_Encode(aCoder)\n       } \n\n       func copyWithZone(zone: NSZone) -> AnyObject {\n              return self.whc_Copy()\n       } \n\n%@\n}\n")
+#define kSWHC_CodingAndCopyingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCoding, NSCopying {\n\n       required init?(coder aDecoder: NSCoder) {\n              super.init()\n              self.whc_Decode(aDecoder)\n       }\n\n       func encode(with aCoder: NSCoder) {\n              self.whc_Encode(aCoder)\n       } \n\n       func copyWithZone(zone: NSZone) -> AnyObject {\n              return self.whc_Copy()\n       } \n\n%@\n}\n")
 
 #define kSWHC_PROPERTY @("    var %@: %@?\n")
 #define kSWHC_ASSGIN_PROPERTY @("    var %@: %@\n")
 #define kSWHC_MAPPABLE @("        %@ <- map[\"%@\"]\n")
+#define kSWHC_ADECODER @("        %@ = aDecoder.decodeObject(forKey: \"%@\") as%@\n")
+#define kSWHC_ENCODER @("        aCoder.encode(%@, forKey: \"%@\")\n")
+
 
 #define kInputJsonPlaceholdText @("请输入json或者xml字符串")
 #define kSourcePlaceholdText @("自动生成对象模型类源文件")
@@ -136,6 +141,7 @@
 
 - (void)setTextViewStyle {
     _jsonField.font = [NSFont systemFontOfSize:14];
+    _jsonField.automaticQuoteSubstitutionEnabled = NO;
     _jsonField.textColor = [NSColor colorWithRed:198.0 / 255.0 green:77.0 / 255.0 blue:21.0 / 255.0 alpha:1.0];
     _jsonField.backgroundColor = [NSColor colorWithRed:40.0 / 255.0 green:40.0 / 255.0 blue:40.0 / 255.0 alpha:1.0];
     _classMField.backgroundColor = _jsonField.backgroundColor;
@@ -154,7 +160,9 @@
     }
 }
 
+/// 底部点击事件
 - (IBAction)clickRadioButtone:(NSButton *)sender{
+    
     if (sender == _checkBox) {
         _classMHeightConstraint.constant = (sender.state == 0 ? 185 : 0);
     }
@@ -204,6 +212,7 @@
 #pragma clang diagnostic pop
             return;
         }
+        /// Objective-C
         if(_checkBox.state == 0){
             if (_classPrefixName.length > 0) {
                 [_classMString appendFormat:kWHC_CLASS_Prefix_M,className,_classPrefixName];
@@ -211,8 +220,14 @@
                 [_classMString appendFormat:kWHC_CLASS_M,className];
             }
             [_classString appendFormat:kWHC_CLASS,className,[self handleDataEngine:dict key:@""]];
-        }else{
-            [_classString appendFormat:kSWHC_MappableCLASS,className,[self handleDataEngine:dict key:@""],[self mapDataEngine:dict key:@""]];
+        }
+        /// Swift
+        else{
+            if (_codingCheckBox.state == 1) {
+                [_classString appendFormat:kSWHC_CodingCLASS,className,[self handleDataEngine:dict key:@""],[self mapDataEngine:dict key:@""], [self aDecoderDataEngine:dict key:@""], [self enCodeDataEngine:dict key:@""]];
+            } else {
+                [_classString appendFormat:kSWHC_MappableCLASS,className,[self handleDataEngine:dict key:@""],[self mapDataEngine:dict key:@""]];
+            }
         }
         _classString = [NSMutableString stringWithFormat:@"\nimport ObjectMapper\n%@",_classString];
         [self setClassHeaderContent:_classString];
@@ -268,6 +283,7 @@
                 NSString * propertyName = [self handlePropertyName:keyArr[i]];
                 if([subObject isKindOfClass:[NSDictionary class]]){
                     NSString * classContent = [self handleDataEngine:subObject key:keyArr[i]];
+                    // OC
                     if(_checkBox.state == 0){
                         [property appendFormat:kWHC_PROPERTY('s'),className,propertyName];
                         if (_codingCheckBox.state != 0 && _copyingCheckBox.state != 0) {
@@ -292,12 +308,18 @@
                                 [_classMString appendFormat:kWHC_CLASS_M,className];
                             }
                         }
-                    }else{
-                        [property appendFormat:kSWHC_PROPERTY,propertyName,className];
+                    }
+                    /// Swift 版本
+                    else{
+                        if ([className isEqualToString:@"String"] == NO) {
+                            [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"%@RawModel", className]];
+                        } else {
+                            [property appendFormat:kSWHC_PROPERTY,propertyName,className];
+                        }
                         if (_codingCheckBox.state != 0 && _copyingCheckBox.state != 0) {
                             [_classString appendFormat:kSWHC_CodingAndCopyingCLASS,className,className,classContent];
                         }else if (_codingCheckBox.state != 0) {
-                            [_classString appendFormat:kSWHC_CodingCLASS,className,className,classContent];
+                            [_classString appendFormat:kSWHC_CodingCLASS,className,classContent,[self mapDataEngine:subObject key:keyArr[i]], [self aDecoderDataEngine:subObject key:keyArr[i]], [self enCodeDataEngine:subObject key:keyArr[i]]];
                         }else if (_copyingCheckBox.state != 0) {
                             [_classString appendFormat:kSWHC_CopyingCLASS,className,className,classContent];
                         }else {
@@ -316,15 +338,21 @@
                     if ([firstValue isKindOfClass:[NSString class]] ||
                         [firstValue isKindOfClass:[NSNumber class]]) {
                         if ([firstValue isKindOfClass:[NSString class]]) {
+                            /// OC
                             if(_checkBox.state == 0){
                                 [property appendFormat:kWHC_PROPERTY('s'),[NSString stringWithFormat:@"NSArray<%@ *>",@"NSString"],keyArr[i]];
-                            }else{
+                            }
+                            /// Swift
+                            else{
                                 [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",@"String"]];
                             }
                         }else {
+                            /// OC
                             if(_checkBox.state == 0){
                                 [property appendFormat:kWHC_PROPERTY('s'),[NSString stringWithFormat:@"NSArray<%@ *>",@"NSNumber"],keyArr[i]];
-                            }else{
+                            }
+                            /// SWift
+                            else{
                                 if (strcmp([firstValue objCType], @encode(float)) == 0 ||
                                     strcmp([firstValue objCType], @encode(CGFloat)) == 0) {
                                     [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",@"CGFloat"]];
@@ -339,6 +367,8 @@
                         }
                     }else {
                     ARRAY_PASER:
+                        
+                        NSLog(@"ARRAY_PASER");
                         classContent = [self handleDataEngine:subObject key:keyArr[i]];
                         if(_checkBox.state == 0){
                             [property appendFormat:kWHC_PROPERTY('s'),[NSString stringWithFormat:@"NSArray<%@ *>",className],propertyName];
@@ -348,15 +378,25 @@
                             }else {
                                 [_classMString appendFormat:kWHC_CLASS_M,className];
                             }
-                        }else{
-                            [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",className]];
-                            [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,[self mapDataEngine:subObject key:keyArr[i]]];
+                        }else{// Swift
+                            if ([className isEqualToString:@"String"] == NO) {
+                                [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@RawModel]", className]];
+                            } else {
+                                [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",className]];
+                            }
+//                            [property appendFormat:kSWHC_PROPERTY,propertyName,[NSString stringWithFormat:@"[%@]",className]];
+                            if (_codingCheckBox.state == 1) {
+                                [_classString appendFormat:kSWHC_CodingCLASS,className,classContent,[self mapDataEngine:subObject key:keyArr[i]], [self aDecoderDataEngine:subObject key:keyArr[i]], [self enCodeDataEngine:subObject key:keyArr[i]]];
+                            } else {
+                                [_classString appendFormat:kSWHC_MappableCLASS,className,classContent,[self mapDataEngine:subObject key:keyArr[i]]];
+                            }
                         }
                     }
                 }else if ([subObject isKindOfClass:[NSString class]]){
                     if(_checkBox.state == 0){
                         [property appendFormat:kWHC_PROPERTY('c'),@"NSString",propertyName];
                     }else{
+                        //Swict
                         [property appendFormat:kSWHC_PROPERTY,propertyName,@"String"];
                     }
                 }else if ([subObject isKindOfClass:[NSNumber class]]){
@@ -372,6 +412,7 @@
                             [property appendFormat:kWHC_ASSIGN_PROPERTY,@"NSInteger",propertyName];
                         }
                     }else{
+                        /// Swift
                         if (strcmp([subObject objCType], @encode(float)) == 0 ||
                             strcmp([subObject objCType], @encode(CGFloat)) == 0) {
                             [property appendFormat:kSWHC_ASSGIN_PROPERTY,propertyName,@"Double = 0.0"];
@@ -388,12 +429,14 @@
                         if(_checkBox.state == 0){
                             [property appendFormat:kWHC_PROPERTY('c'),@"NSString",propertyName];
                         }else{
+                            /// Swift
                             [property appendFormat:kSWHC_PROPERTY,propertyName,@"String"];
                         }
                     }else if([subObject isKindOfClass:[NSNull class]]){
                         if(_checkBox.state == 0){
                             [property appendFormat:kWHC_PROPERTY('c'),@"NSString",propertyName];
                         }else{
+                            /// Swift
                             [property appendFormat:kSWHC_PROPERTY,propertyName,@"String"];
                         }
                     }
@@ -465,6 +508,104 @@
     return @"";
 }
 
+#pragma mark - decoder
+- (NSString*)aDecoderDataEngine:(id)object key:(NSString*)key{
+    if(object){
+        NSMutableString  * property = [NSMutableString new];
+        if([object isKindOfClass:[NSDictionary class]]){
+            NSDictionary  * dict = object;
+            NSInteger       count = dict.count;
+            NSArray       * keyArr = [dict allKeys];
+            for (NSInteger i = 0; i < count; i++) {
+                NSString * propertyName = [self handlePropertyName:keyArr[i]];
+                [property appendFormat:kSWHC_ADECODER,propertyName,propertyName, [self getTypeWith:dict[keyArr[i]] propertyName:propertyName]];
+            }
+        }else if ([object isKindOfClass:[NSArray class]]){
+            NSArray  * dictArr = object;
+            NSUInteger  count = dictArr.count;
+            if(count){
+                NSObject  * tempObject = dictArr[0];
+                for (NSInteger i = 0; i < dictArr.count; i++) {
+                    NSObject * subObject = dictArr[i];
+                    if([subObject isKindOfClass:[NSDictionary class]]){
+                        if(((NSDictionary *)subObject).count > ((NSDictionary *)tempObject).count){
+                            tempObject = subObject;
+                        }
+                    }
+                    if([subObject isKindOfClass:[NSDictionary class]]){
+                        if(((NSArray *)subObject).count > ((NSArray *)tempObject).count){
+                            tempObject = subObject;
+                        }
+                    }
+                }
+                [property appendString:[self aDecoderDataEngine:tempObject key:key]];
+            }
+        }
+        return property;
+    }
+    return @"";
+}
+
+- (NSString *)getTypeWith:(id)object propertyName:(NSString *)propertyName{
+    if ([object isKindOfClass:[NSNumber class]]) {
+        if (strcmp([object objCType], @encode(float)) == 0 ||
+            strcmp([object objCType], @encode(CGFloat)) == 0) {
+            return @"! Double";
+        }else if (strcmp([object objCType], @encode(double)) == 0) {
+            return @"! Double";
+        }else if (strcmp([object objCType], @encode(BOOL)) == 0) {
+            return @"! Bool";
+        }else {
+            return @"! Int";
+        }
+    } else if ([object isKindOfClass:[NSString class]]) {
+        return @"? String";
+    } else if ([object isKindOfClass:[NSDictionary class]]) {
+        return [NSString stringWithFormat:@"? %@RawModel",[propertyName capitalizedString]];
+    } else if ([object isKindOfClass:[NSArray class]]) {
+        return [NSString stringWithFormat:@"? [%@RawModel]",[propertyName capitalizedString]];
+    }
+    
+    return @"? <#code#>";
+}
+
+#pragma mark - Encode
+- (NSString*)enCodeDataEngine:(id)object key:(NSString*)key{
+    if(object){
+        NSMutableString  * property = [NSMutableString new];
+        if([object isKindOfClass:[NSDictionary class]]){
+            NSDictionary  * dict = object;
+            NSInteger       count = dict.count;
+            NSArray       * keyArr = [dict allKeys];
+            for (NSInteger i = 0; i < count; i++) {
+                NSString * propertyName = [self handlePropertyName:keyArr[i]];
+                [property appendFormat:kSWHC_ENCODER,propertyName,propertyName];
+            }
+        }else if ([object isKindOfClass:[NSArray class]]){
+            NSArray  * dictArr = object;
+            NSUInteger  count = dictArr.count;
+            if(count){
+                NSObject  * tempObject = dictArr[0];
+                for (NSInteger i = 0; i < dictArr.count; i++) {
+                    NSObject * subObject = dictArr[i];
+                    if([subObject isKindOfClass:[NSDictionary class]]){
+                        if(((NSDictionary *)subObject).count > ((NSDictionary *)tempObject).count){
+                            tempObject = subObject;
+                        }
+                    }
+                    if([subObject isKindOfClass:[NSDictionary class]]){
+                        if(((NSArray *)subObject).count > ((NSArray *)tempObject).count){
+                            tempObject = subObject;
+                        }
+                    }
+                }
+                [property appendString:[self enCodeDataEngine:tempObject key:key]];
+            }
+        }
+        return property;
+    }
+    return @"";
+}
 
 - (void)setRepresentedObject:(id)representedObject {
     [super setRepresentedObject:representedObject];

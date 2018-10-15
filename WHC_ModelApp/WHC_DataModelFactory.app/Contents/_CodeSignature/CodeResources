@@ -8,42 +8,26 @@
 		<data>
 		TGXgV3ENOjAwwjSWRHURZyyLH5k=
 		</data>
+		<key>Resources/Assets.car</key>
+		<data>
+		515iUXnlzz7AiCTlpOGIzGu/H3g=
+		</data>
 		<key>Resources/Base.lproj/Main.storyboardc/Info.plist</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			ETTkXGh8ZccQIMeLQUFxbEaF1+c=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		WkBhO45F+8lXBs8SC12evqO1oTY=
+		</data>
 		<key>Resources/Base.lproj/Main.storyboardc/MainMenu.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			IhSSplZbxjJDzOUDxYPO4Q3/388=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		yTR3ojVpxM062TvidIk3xtWZJqM=
+		</data>
 		<key>Resources/Base.lproj/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			j0X9OtNBYEiE80yfpHFOa1iHsB4=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		kOAxAIuVW7o7842MYArl9SjdTB4=
+		</data>
 		<key>Resources/Base.lproj/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			UXnMit95HEFxGAYbrmcT5xeNggs=
-			</data>
-			<key>optional</key>
-			<true/>
-		</dict>
+		<data>
+		HUf1OQZIa41nWHXscRML/q5S5U8=
+		</data>
 		<key>Resources/dict.png</key>
 		<data>
 		k0zhf3eGYsePItcDyprskcwpkbE=
@@ -54,7 +38,7 @@
 		</data>
 		<key>Resources/swift.png</key>
 		<data>
-		f9zML9fQv7Hov6kzSgA7VmBqhUw=
+		alf1pDMde0XHYuBP7oCHtewh4TI=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -70,57 +54,60 @@
 			XnLJNic7fiWpby6/bv22Wymw7l4g5/MOLweqfSVJJMI=
 			</data>
 		</dict>
+		<key>Resources/Assets.car</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			515iUXnlzz7AiCTlpOGIzGu/H3g=
+			</data>
+			<key>hash2</key>
+			<data>
+			yZpQJXpeYI3994bQgq7mCJHKXPrecvaTFf1IlyeJ05s=
+			</data>
+		</dict>
 		<key>Resources/Base.lproj/Main.storyboardc/Info.plist</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			ETTkXGh8ZccQIMeLQUFxbEaF1+c=
+			WkBhO45F+8lXBs8SC12evqO1oTY=
 			</data>
 			<key>hash2</key>
 			<data>
-			S9F0/+Q/k4qxE842SBNacqUhQ65WN636YhsUxXC9GGc=
+			IiD7UJ0dQDTV2TFGTBcNSJLksssWMoU53Coy/BG3j1Q=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Resources/Base.lproj/Main.storyboardc/MainMenu.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			IhSSplZbxjJDzOUDxYPO4Q3/388=
+			yTR3ojVpxM062TvidIk3xtWZJqM=
 			</data>
 			<key>hash2</key>
 			<data>
-			z8lIWZZdOUA8NlVv2Nesv5qQlGITxBcaJpgOFMi/V74=
+			4pdGLYC1j+cpjmd7pOo4vljTDKArRhgWdrebZ8DXtmQ=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Resources/Base.lproj/Main.storyboardc/NSWindowController-B8D-0N-5wS.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			j0X9OtNBYEiE80yfpHFOa1iHsB4=
+			kOAxAIuVW7o7842MYArl9SjdTB4=
 			</data>
 			<key>hash2</key>
 			<data>
-			dpVnQXgFWTz1DUudZ8th87V+zj52rmOU/qUX40NU+x8=
+			+j9HB07v75145wuNFEHSp6lH+F6GIx1rRJ3DOXLDBgY=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Resources/Base.lproj/Main.storyboardc/XfG-lQ-9wD-view-m2S-Jp-Qdl.nib</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			UXnMit95HEFxGAYbrmcT5xeNggs=
+			HUf1OQZIa41nWHXscRML/q5S5U8=
 			</data>
 			<key>hash2</key>
 			<data>
-			gkug365hH2M/vkCoFXJxv/H2gG3zOcK9vlBZ5c4JKHQ=
+			x5hEdE0AL3q2i5tMdRBcC02RMuAlUEWgnA+64r53kUM=
 			</data>
-			<key>optional</key>
-			<true/>
 		</dict>
 		<key>Resources/dict.png</key>
 		<dict>
@@ -148,11 +135,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			f9zML9fQv7Hov6kzSgA7VmBqhUw=
+			alf1pDMde0XHYuBP7oCHtewh4TI=
 			</data>
 			<key>hash2</key>
 			<data>
-			JsAd7dOS654WMgjgST9MNE7wweQpqBNjTZtOKHrWQrE=
+			quFHglcew3qlr/0pFc1HAUjZkXo23W2BwdVKdMBDklQ=
 			</data>
 		</dict>
 	</dict>
@@ -173,6 +160,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -232,6 +224,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>
