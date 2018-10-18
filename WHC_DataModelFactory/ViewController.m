@@ -57,7 +57,7 @@
 /// 包含map内容
 #define kSWHC_MappableCLASS @("\nclass %@RawModel: Mappable {\n\n%@\n    required init?(map: Map) {}\n\n    func mapping(map: Map) {\n%@    }\n}\n")
 /// 包含map coding内容
-#define kSWHC_CodingCLASS @("\nclass %@RawModel: NSObject, Mappable, NSCoding {\n\n%@\n\n    required init?(map: Map) {} \n    func mapping(map: Map) {\n%@\n    }\n\n    required init?(coder aDecoder: NSCoder) {\n        super.init()\n%@\n    }\n\n    func encode(with aCoder: NSCoder) {\n%@\n    }\n}\n")
+#define kSWHC_CodingCLASS @("\nclass %@RawModel: NSObject, Mappable, NSCoding {\n\n%@\n    required init?(map: Map) {} \n\n    func mapping(map: Map) {\n%@    }\n\n    required init?(coder aDecoder: NSCoder) {\n        super.init()\n%@    }\n\n    func encode(with aCoder: NSCoder) {\n%@    }\n}\n")
 
 #define kSWHC_CopyingCLASS @("\n@objc(%@)\nclass %@ :NSObject, NSCopying {\n \n       func copyWithZone(zone: NSZone) -> AnyObject {\n              return self.whc_Copy()\n       }  \n\n %@\n}\n")
 
